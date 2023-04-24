@@ -9,7 +9,17 @@ public class Interpreter {
         String inputString = scanner.nextLine();
         String[] inputLines = inputString.split(";");
         Map<String, Integer> variablesMap = new HashMap<String, Integer>();
-        
+
+        for (String inputLine : inputLines) {
+
+            String[] assignmentParts = inputLine.split("=");
+
+            if (assignmentParts.length != 2) {
+                System.out.println("error");
+                return;
+            }
+
+        }
     }
 
 
