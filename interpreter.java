@@ -19,6 +19,11 @@ public class Interpreter {
                 return;
             }
 
+            String variableName = assignmentParts[0].trim();
+            String expressionString = assignmentParts[1].trim();
+
+            // need to check for valid variable names
+            // then need to evaluate any expressions
         }
     }
 
