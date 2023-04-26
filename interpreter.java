@@ -22,7 +22,10 @@ public class Interpreter {
             String variableName = assignmentParts[0].trim();
             String expressionString = assignmentParts[1].trim();
 
-            // need to check for valid variable names
+            if (!isValidVariableName(variableName)) {
+                System.out.println("error");
+                return;
+            }
             // then need to evaluate any expressions
         }
     }
