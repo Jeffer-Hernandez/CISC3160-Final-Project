@@ -27,9 +27,28 @@ public class Interpreter {
                 return;
             }
             // then need to evaluate any expressions
+            // need to print out evaluated expressions or "answers" when finished
         }
     }
 
+    private static boolean isValidVariableName(String variableName) {
+        if (variableName.length() == 0) {
+            return false;
+        }
+        
+        if (!Character.isLetter(variableName.charAt(0)) && variableName.charAt(0) != '_'){
+            return false;
+        }
+
+        for (int i = 1; i < variableName.length(); i++) {
+            char currentChar = variableName.charAt(i);
+            if (!Character.isLetterOrDigit(currentChar) && currentChar != '_'){
+                return false;
+            }
+        }
+
+        return true;
+    }
 
 
 }
