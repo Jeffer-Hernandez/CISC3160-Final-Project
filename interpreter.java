@@ -26,7 +26,13 @@ public class Interpreter {
                 System.out.println("error");
                 return;
             }
-            // then need to evaluate any expressions
+            
+            int value = evaluateExpression(expressionString, variablesMap);
+            if (value == Integer.MIN_VALUE) {
+                System.out.println("error");
+                return;
+            }
+            // commit variable names and their values to the map
             // need to print out evaluated expressions or "answers" when finished
         }
     }
@@ -48,6 +54,12 @@ public class Interpreter {
         }
 
         return true;
+    }
+
+    private static int evaluateExpression(String expressionString, Map<String, Integer> variablesMap) {
+        List<String> tokensList = tokenize(expressionString);
+        // need to create tokenize function to create a token list from the expression string
+        // need to evaluate expression tokens and return 
     }
 
 
