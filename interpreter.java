@@ -1,6 +1,8 @@
 import java.util.Scanner;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Interpreter {
 
@@ -58,8 +60,33 @@ public class Interpreter {
 
     private static int evaluateExpression(String expressionString, Map<String, Integer> variablesMap) {
         List<String> tokensList = tokenize(expressionString);
-        // need to create tokenize function to create a token list from the expression string
+        
+        return evaluateExpressionTokens(tokensList, variablesMap);
         // need to evaluate expression tokens and return 
+        // create evaluateExpressionTokens function
+    }
+
+    private static List<String> tokenize(String expressionString) {
+        List<String> tokenList = new ArrayList<String>();
+        StringBuilder tokenBuilder = new StringBuilder();
+
+        for (int i = 0; i < expressionString.length(); i++){
+            char currentChar = expressionString.charAt(i);
+            if (currentChar == '+' || currentChar == '_' || currentChar == '*' || currentChar == '(' || currentChar == ')'){
+                if (tokenBuilder.length() !=0){
+                    tokenList.add(tokenBuilder.toString());
+                    tokenBuilder = new StringBuilder();
+                }
+                tokenList.add(Character.toString(currentChar));
+            } else {
+                tokenBuilder.append(currentChar);
+            }
+        }
+        
+        if (tokenBuilder.length() != 0) {
+            tokenList.add(tokenBuilder.toString());
+        }
+        return tokenList;
     }
 
 
