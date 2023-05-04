@@ -185,6 +185,20 @@ public class Interpreter {
         }
     }
 
+    private static boolean isValidIntegerString(String inputString) {
+        if (inputString.charAt(0) == '0' && inputString.length() > 1) {
+            return false;
+        }
+
+        for (int i =0; i < inputString.length(); i++) {
+            char currentChar = inputString.charAt(i);
+            if (!Character.isDigit(currentChar)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
 
 
