@@ -34,9 +34,13 @@ public class Interpreter {
                 System.out.println("error");
                 return;
             }
-            // commit variable names and their values to the map
-            // need to print out evaluated expressions or "answers" when finished
+            variablesMap.put(variableName, value);
+            
         }
+        for (Map.Entry<String, Integer> entry : variablesMap.entrySet()) {
+            System.out.println(entry.getKey() + " = " + entry.getValue());
+        }
+        // need to print out evaluated expressions or "answers" when finished
     }
 
     private static boolean isValidVariableName(String variableName) {
