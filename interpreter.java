@@ -5,77 +5,64 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Interpreter {
-
-    public static void main(String[] args){
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         String inputString = scanner.nextLine();
         String[] inputLines = inputString.split(";");
         Map<String, Integer> variablesMap = new HashMap<String, Integer>();
-
         for (String inputLine : inputLines) {
-
             String[] assignmentParts = inputLine.split("=");
-
             if (assignmentParts.length != 2) {
                 System.out.println("error");
                 return;
             }
-
             String variableName = assignmentParts[0].trim();
             String expressionString = assignmentParts[1].trim();
-
             if (!isValidVariableName(variableName)) {
                 System.out.println("error");
                 return;
             }
-            
             int value = evaluateExpression(expressionString, variablesMap);
             if (value == Integer.MIN_VALUE) {
                 System.out.println("error");
                 return;
             }
             variablesMap.put(variableName, value);
-            
         }
         for (Map.Entry<String, Integer> entry : variablesMap.entrySet()) {
             System.out.println(entry.getKey() + " = " + entry.getValue());
         }
-        // need to print out evaluated expressions or "answers" when finished
     }
 
     private static boolean isValidVariableName(String variableName) {
         if (variableName.length() == 0) {
             return false;
         }
-        
-        if (!Character.isLetter(variableName.charAt(0)) && variableName.charAt(0) != '_'){
+        if (!Character.isLetter(variableName.charAt(0)) && variableName.charAt(0) != '_') {
             return false;
         }
-
         for (int i = 1; i < variableName.length(); i++) {
             char currentChar = variableName.charAt(i);
-            if (!Character.isLetterOrDigit(currentChar) && currentChar != '_'){
+            if (!Character.isLetterOrDigit(currentChar) && currentChar != '_') {
                 return false;
             }
         }
-
         return true;
     }
 
     private static int evaluateExpression(String expressionString, Map<String, Integer> variablesMap) {
         List<String> tokensList = tokenize(expressionString);
-        
         return evaluateExpressionTokens(tokensList, variablesMap);
     }
 
     private static List<String> tokenize(String expressionString) {
         List<String> tokenList = new ArrayList<String>();
         StringBuilder tokenBuilder = new StringBuilder();
-
-        for (int i = 0; i < expressionString.length(); i++){
+        for (int i = 0; i < expressionString.length(); i++) {
             char currentChar = expressionString.charAt(i);
-            if (currentChar == '+' || currentChar == '_' || currentChar == '*' || currentChar == '(' || currentChar == ')'){
-                if (tokenBuilder.length() !=0){
+            if (currentChar == '+' || currentChar == '_' || currentChar == '*' || currentChar == '('
+                    || currentChar == ')') {
+                if (tokenBuilder.length() != 0) {
                     tokenList.add(tokenBuilder.toString());
                     tokenBuilder = new StringBuilder();
                 }
@@ -84,7 +71,6 @@ public class Interpreter {
                 tokenBuilder.append(currentChar);
             }
         }
-        
         if (tokenBuilder.length() != 0) {
             tokenList.add(tokenBuilder.toString());
         }
@@ -92,29 +78,22 @@ public class Interpreter {
     }
 
     private static int evaluateExpressionTokens(List<String> tokensList, Map<String, Integer> variablesMap) {
-
         int result = evaluateTerm(tokensList, variablesMap);
-
         if (result == Integer.MIN_VALUE) {
             return result;
         }
-
         while (!tokensList.isEmpty()) {
-
             String operator = tokensList.remove(0);
             if (!operator.equals("+") && !operator.equals("-")) {
                 tokensList.add(0, operator);
                 return result;
             }
-
             int value = evaluateTerm(tokensList, variablesMap);
-
             if (value == Integer.MIN_VALUE) {
                 return value;
             }
-            if (operator.equals("+")){
+            if (operator.equals("+")) {
                 result += value;
-
             } else {
                 result -= value;
             }
@@ -123,18 +102,14 @@ public class Interpreter {
     }
 
     private static int evaluateTerm(List<String> tokensList, Map<String, Integer> variablesMap) {
-        
-        int result  = evaluateFactor( tokensList, variablesMap);
-        //  need to create evaluateFactor function
+        int result = evaluateFactor(tokensList, variablesMap);
         if (result == Integer.MIN_VALUE) {
             return result;
         }
-
         while (!tokensList.isEmpty()) {
-
             String operator = tokensList.remove(0);
             if (!operator.equals("*")) {
-                
+
                 tokensList.add(0, operator);
                 return result;
             }
@@ -142,24 +117,20 @@ public class Interpreter {
             if (value == Integer.MIN_VALUE) {
                 return value;
             }
-
             result *= value;
         }
-
         return result;
     }
 
-    private static int evaluateFactor( List<String> tokensList, Map<String, Integer> variablesMap) {
+    private static int evaluateFactor(List<String> tokensList, Map<String, Integer> variablesMap) {
         String nextToken = tokensList.remove(0);
         if (nextToken.equals("(")) {
             int result = evaluateExpressionTokens(tokensList, variablesMap);
-
             if (result == Integer.MIN_VALUE) {
                 return result;
             }
             if (tokensList.size() == 0 || !tokensList.remove(0).equals(")")) {
                 return Integer.MIN_VALUE;
-
             }
             return result;
         } else if (nextToken.equals("+") || nextToken.equals("-")) {
@@ -174,12 +145,9 @@ public class Interpreter {
             }
         } else {
             if (isValidIntegerString(nextToken)) {
-                // need to create isValidIntegerString
                 return Integer.parseInt(nextToken);
-
             } else if (variablesMap.containsKey(nextToken)) {
                 return variablesMap.get(nextToken);
-
             } else {
                 return Integer.MIN_VALUE;
             }
@@ -190,17 +158,12 @@ public class Interpreter {
         if (inputString.charAt(0) == '0' && inputString.length() > 1) {
             return false;
         }
-
-        for (int i =0; i < inputString.length(); i++) {
+        for (int i = 0; i < inputString.length(); i++) {
             char currentChar = inputString.charAt(i);
             if (!Character.isDigit(currentChar)) {
                 return false;
             }
         }
-
         return true;
     }
-
-
-
 }
