@@ -89,5 +89,41 @@ public class Interpreter {
         return tokenList;
     }
 
+    private static int evaluateExpressionTokens(List<String> tokensList, Map<String, Integer> variablesMap) {
+
+        int result = evaluateTerm(tokensList, variablesMap);
+        // create evaluateTerm function
+        if (result == Integer.MIN_VALUE) {
+            return result;
+        }
+
+        while (!tokensList.isEmpty()) {
+
+            String operator = tokensList.remove(0);
+            if (!operator.equals("+") && !operator.equals("-")) {
+                tokensList.add(0, operator);
+                return result;
+            }
+
+            int value = evaluateTerm(tokensList, variablesMap);
+
+            if (value == Integer.MIN_VALUE) {
+                return value;
+            }
+            if (operator.equals("+")){
+                result += value;
+
+            }
+            if (operator.equals("+")){
+                result += value;
+            } else {
+                result -= value;
+            }
+        }
+        return result;
+    }
+
+    
+
 
 }
