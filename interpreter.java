@@ -62,8 +62,6 @@ public class Interpreter {
         List<String> tokensList = tokenize(expressionString);
         
         return evaluateExpressionTokens(tokensList, variablesMap);
-        // need to evaluate expression tokens and return 
-        // create evaluateExpressionTokens function
     }
 
     private static List<String> tokenize(String expressionString) {
@@ -92,7 +90,7 @@ public class Interpreter {
     private static int evaluateExpressionTokens(List<String> tokensList, Map<String, Integer> variablesMap) {
 
         int result = evaluateTerm(tokensList, variablesMap);
-        // create evaluateTerm function
+
         if (result == Integer.MIN_VALUE) {
             return result;
         }
@@ -123,7 +121,71 @@ public class Interpreter {
         return result;
     }
 
-    
+    private static int evaluateTerm(List<String> tokensList, Map<String, Integer> variablesMap) {
+        
+        int result  = evaluateFactor( tokensList, variablesMap);
+        //  need to create evaluateFactor function
+        if (result == Integer.MIN_VALUE) {
+            return result;
+        }
+
+        while (!tokensList.isEmpty()) {
+
+            String operator = tokensList.remove(0);
+            if (!operator.equals("*")) {
+                
+                tokensList.add(0, operator);
+                return result;
+            }
+            int value = evaluateFactor(tokensList, variablesMap);
+            if (value == Integer.MIN_VALUE) {
+                return value;
+            }
+
+            result *= value;
+        }
+
+        return result;
+    }
+
+    private static int evaluateFactor( List<String> tokensList, Map<String, Integer> variablesMap) {
+        String nextToken = tokensList.remove(0);
+        if (nextToken.equals("(")) {
+            int result = evaluateExpressionTokens(tokensList, variablesMap);
+
+            if (result == Integer.MIN_VALUE) {
+                return result;
+            }
+            if (tokensList.size() == 0 || !tokensList.remove(0).equals(")")) {
+                return Integer.MIN_VALUE;
+
+            }
+            return result;
+        } else if (nextToken.equals("+") || nextToken.equals("-")) {
+            int value = evaluateFactor(tokensList, variablesMap);
+            if (value == Integer.MIN_VALUE) {
+                return value;
+            }
+            if (nextToken.equals("+")) {
+                return value;
+            } else {
+                return -value;
+            }
+        } else {
+            if (isValidIntegerString(nextToken)) {
+                // need to create isValidIntegerString
+                return Integer.parseInt(nextToken);
+
+            } else if (variablesMap.containsKey(nextToken)) {
+                return variablesMap.get(nextToken);
+
+            } else {
+                return Integer.MIN_VALUE;
+            }
+        }
+    }
+
+
 
 
 }
