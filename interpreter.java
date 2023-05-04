@@ -115,9 +115,6 @@ public class Interpreter {
             if (operator.equals("+")){
                 result += value;
 
-            }
-            if (operator.equals("+")){
-                result += value;
             } else {
                 result -= value;
             }
